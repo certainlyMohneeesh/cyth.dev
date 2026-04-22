@@ -1,0 +1,38 @@
+{
+  "work": [
+    {
+      "id": "machastore",
+      "company": "MachaCo.store",
+      "duration": "WORKING · PRESENT",
+      "role": "Tech Lead (Co-Founder)",
+      "bullets": [
+        "Led technology strategy and execution for an emerging e-commerce brand, driving platform scalability and business alignment.",
+        "Architected and deployed a Next.js-based platform with integrated analytics to track KPIs and guide data-driven decisions.",
+        "Contributed to product R&D and strategic planning, ensuring technical solutions supported growth and market positioning."
+      ],
+      "link": {
+        "url": "https://www.machaco.store",
+        "label": "machaco.store ↗"
+      }
+    },
+    {
+      "id": "adityabirla",
+      "company": "Aditya Birla Grasim (TRADC)",
+      "duration": "JUN 2025 – AUG 2025",
+      "role": "Product Development Intern",
+      "bullets": [
+        "Designed and prototyped a sustainable performance sweatshirt using SeaCell fiber, managing the full product lifecycle from fiber selection to garment construction.",
+        "Collaborated cross-functionally with textile scientists, process engineers, and design leads to align performance, aesthetics, and manufacturability.",
+        "Delivered a structured technical dossier and product narrative — bridging R&D insights with consumer-facing use cases and sustainable market potential."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Des — Product Design",
+      "institution": "National Institute of Design",
+      "period": "2022 – 2026",
+      "description": "Specializing in interaction design, material innovation, and product strategy."
+    }
+  ]
+}

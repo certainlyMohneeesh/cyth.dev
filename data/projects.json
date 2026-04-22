@@ -1,0 +1,80 @@
+[
+  {
+    "id": "nesternity",
+    "title": "Nesternity",
+    "subtitle": "The Calmest CRM",
+    "year": "2025",
+    "description": "All-in-one workspace for managing clients, projects, tasks, and invoices — from one calm, cozy hub. Built with drag-and-drop, real-time sync, and PDF generation.",
+    "tags": [
+      "Next.js 16",
+      "Supabase",
+      "PostgreSQL",
+      "Zustand",
+      "Dnd Kit",
+      "React-PDF"
+    ],
+    "category": "app",
+    "live": "https://nesternity.cyth.app",
+    "source": "https://github.com/certainlyMohneeesh/nesternity",
+    "image": "https://res.cloudinary.com/dj3dp0ccy/image/upload/f_auto/q_auto/v1776791713/nesternity_xq4rmc.png",
+    "featured": true
+  },
+  {
+    "id": "mgnrega",
+    "title": "MGNREGA India",
+    "subtitle": "Data Visualization",
+    "year": "2025",
+    "description": "Presents insights from India's MGNREGA employment scheme. Interactive charts and graphs across all states using the data.gov.in API, with voice input support.",
+    "tags": [
+      "Next.js 16",
+      "React 19",
+      "data.gov.in API",
+      "Voice Input",
+      "Figma"
+    ],
+    "category": "dataviz",
+    "live": "https://mgnrega.cyth.app",
+    "source": "https://github.com/certainlyMohneeesh/mgnrega",
+    "image": "https://res.cloudinary.com/dj3dp0ccy/image/upload/f_auto/q_auto/v1776791716/mgnregapost_fgrsnr.png",
+    "featured": true
+  },
+  {
+    "id": "deckhand",
+    "title": "Deckhand",
+    "subtitle": "Remote Presentation Control",
+    "year": "2025",
+    "description": "Control your slide decks from anywhere via WebSocket. Works as a mobile remote and teleprompter. Deployed on DigitalOcean with a custom socket backend.",
+    "tags": [
+      "WebSocket",
+      "Next.js 16",
+      "React 19",
+      "DigitalOcean",
+      "Teleprompter"
+    ],
+    "category": "tool",
+    "live": "https://deckhand-nesternity.cyth.app",
+    "source": "https://github.com/certainlyMohneeesh/deckhand",
+    "sourceBack": "https://github.com/certainlyMohneeesh/deckhand-socket",
+    "image": "https://res.cloudinary.com/dj3dp0ccy/image/upload/f_auto/q_auto/v1776791712/deckhandpost_xpfhol.png",
+    "featured": true
+  },
+  {
+    "id": "parathaful",
+    "title": "Parathaful",
+    "subtitle": "Concept Showcase",
+    "year": "2025",
+    "description": "A bold concept showcase website featuring unique designs inspired by vibrant paratha culture. Heavy use of GSAP scroll-triggered animations.",
+    "tags": [
+      "GSAP",
+      "Next.js 15",
+      "React 19",
+      "TailwindCSS 4",
+      "Figma"
+    ],
+    "category": "design",
+    "live": "https://parathaful.cyth.app",
+    "source": "https://github.com/certainlyMohneeesh/parathaful",
+    "image": "https://res.cloudinary.com/dj3dp0ccy/image/upload/f_auto/q_auto/v1776791739/parathafulpost_joce5c.png",
+    "featured": false
+  }
+]
