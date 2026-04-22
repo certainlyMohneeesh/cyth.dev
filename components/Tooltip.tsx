@@ -16,14 +16,14 @@ export default function Tooltip({
   delay = 350,
 }: TooltipProps) {
   const [visible, setVisible] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   const show = () => {
     timerRef.current = setTimeout(() => setVisible(true), delay);
   };
 
   const hide = () => {
-    clearTimeout(timerRef.current);
+    if (timerRef.current) clearTimeout(timerRef.current);
     setVisible(false);
   };
 

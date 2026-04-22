@@ -1,0 +1,106 @@
+---
+title: "How A Simple Assignment Became A Full-Stack Automated System"
+description: "The story of how a basic college assignment evolved into a comprehensive automated system with CI/CD pipelines, monitoring, and production-grade architecture."
+date: "2025-11-04"
+tags: ["automation", "full-stack", "devops", "nextjs"]
+isPublished: true
+readTime: "8 min"
+---
+
+## The Beginning
+
+It started the way most side projects do — with a simple college assignment. Build a web application, demonstrate CRUD operations, deploy it somewhere. Nothing groundbreaking.
+
+But something clicked halfway through. The manual deployment process was _painful_. Push to GitHub, SSH into the server, pull changes, restart the service, pray nothing breaks. Every. Single. Time.
+
+## The Automation Itch
+
+The first thing I automated was the deployment pipeline. A simple GitHub Actions workflow that would:
+
+```bash
+# The old way
+ssh user@server
+cd /var/www/app
+git pull origin main
+npm install
+npm run build
+pm2 restart app
+```
+
+```yaml
+# The new way — .github/workflows/deploy.yml
+name: Deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci && npm run build
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /var/www/app
+            git pull
+            npm ci --production
+            npm run build
+            pm2 restart app
+```
+
+That single workflow file saved me hours. But it was just the beginning.
+
+## Adding Monitoring
+
+Once deployment was automated, the next pain point became obvious: **I had no idea when things broke.** The app would go down, and I'd only find out when someone messaged me.
+
+So I added health checks. A simple `/api/health` endpoint that returned the app status, database connectivity, and memory usage:
+
+```typescript
+export async function GET() {
+  const health = {
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    database: await checkDatabaseConnection(),
+  };
+
+  return Response.json(health);
+}
+```
+
+## The Architecture Evolves
+
+What was once a single-file Express app became:
+
+- **Frontend**: Next.js with SSR and ISR
+- **Backend**: API routes with middleware for auth, rate limiting, and logging
+- **Database**: PostgreSQL with Prisma ORM
+- **Cache**: Redis for session management and API response caching
+- **CI/CD**: GitHub Actions with staging and production environments
+- **Monitoring**: Custom health checks + Uptime Robot
+
+## Lessons Learned
+
+1. **Start simple, iterate fast.** The first version was ugly and barely functional. That's fine.
+2. **Automate what hurts.** If you're doing something manually more than twice, automate it.
+3. **Monitoring isn't optional.** You need to know when things break before your users do.
+4. **Over-engineering has a time and place.** A college assignment didn't need microservices. But learning to build them was invaluable.
+
+> The best systems aren't built — they evolve. Start with the simplest thing that works, then let the pain points guide your architecture.
+
+## What's Next
+
+The system continues to grow. I'm currently adding:
+
+- **Feature flags** for gradual rollouts
+- **A/B testing** infrastructure
+- **Automated database backups** with point-in-time recovery
+
+What started as a homework assignment is now the foundation for how I approach every new project. The tools change, but the principles remain: automate everything, monitor everything, and never stop iterating.

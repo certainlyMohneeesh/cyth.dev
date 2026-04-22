@@ -94,7 +94,7 @@ a {
 
 /* ─── Layout ────────────────────────────────────────────── */
 .container {
-  max-width: 1100px;
+  max-width: 680px;
   margin: 0 auto;
   padding: 0 2.5rem;
 }
@@ -361,4 +361,410 @@ a {
 
 .project-card:hover .overlay {
   opacity: 1;
+}
+
+/* ─── Reading Progress Bar ──────────────────────────────── */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(184, 150, 90, 0.4);
+}
+
+/* ─── Blog Prose ────────────────────────────────────────── */
+.prose-blog {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.85;
+  color: var(--text-muted);
+}
+
+.prose-blog h1 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--text);
+  margin: 2.5rem 0 1rem;
+  letter-spacing: -0.01em;
+}
+
+.prose-blog h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--text);
+  margin: 2.5rem 0 0.75rem;
+  letter-spacing: -0.01em;
+  position: relative;
+}
+
+.prose-blog h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--text);
+  margin: 2rem 0 0.6rem;
+}
+
+.prose-blog h2 .heading-anchor,
+.prose-blog h3 .heading-anchor {
+  opacity: 0;
+  color: var(--accent-dim);
+  margin-left: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  transition: opacity 0.2s ease;
+  text-decoration: none;
+}
+
+.prose-blog h2:hover .heading-anchor,
+.prose-blog h3:hover .heading-anchor {
+  opacity: 1;
+}
+
+.prose-blog p {
+  margin-bottom: 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.85;
+}
+
+.prose-blog strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.prose-blog em {
+  font-style: italic;
+  color: var(--text);
+}
+
+.prose-blog a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--accent-dim);
+  transition: text-decoration-color 0.2s ease;
+}
+
+.prose-blog a:hover {
+  text-decoration-color: var(--accent);
+}
+
+.prose-blog ul {
+  list-style: none;
+  margin-bottom: 1.25rem;
+  padding-left: 0;
+}
+
+.prose-blog ul li {
+  position: relative;
+  padding-left: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+  line-height: 1.85;
+}
+
+.prose-blog ul li::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  color: var(--accent-dim);
+  font-size: 0.45rem;
+  top: 0.4rem;
+}
+
+.prose-blog ol {
+  list-style: none;
+  counter-reset: ordered-list;
+  margin-bottom: 1.25rem;
+  padding-left: 0;
+}
+
+.prose-blog ol li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+  line-height: 1.85;
+  counter-increment: ordered-list;
+}
+
+.prose-blog ol li::before {
+  content: counter(ordered-list);
+  position: absolute;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--accent);
+  top: 0.15rem;
+  letter-spacing: 0.05em;
+}
+
+.prose-blog blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.prose-blog hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.prose-blog img {
+  border-radius: 4px;
+  margin: 1.5rem 0;
+  max-width: 100%;
+}
+
+/* ─── Code Blocks ───────────────────────────────────────── */
+.prose-blog pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.7;
+  position: relative;
+}
+
+.prose-blog pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  color: var(--text);
+}
+
+.prose-blog :not(pre)>code {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.code-block-wrapper {
+  position: relative;
+}
+
+.code-block-wrapper .copy-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.code-block-wrapper:hover .copy-btn {
+  opacity: 1;
+}
+
+.code-block-wrapper .copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── Tag active state ──────────────────────────────────── */
+.tag-active {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: rgba(184, 150, 90, 0.08) !important;
+}
+
+.tag-clickable {
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+}
+
+.tag-clickable:active {
+  transform: scale(0.95);
+}
+
+/* ─── Blog post row ─────────────────────────────────────── */
+.blog-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--border);
+  gap: 1rem;
+  flex-wrap: wrap;
+  text-decoration: none;
+  transition: padding-left 0.25s var(--ease-out-expo), background 0.2s ease;
+  cursor: pointer;
+}
+
+.blog-row:hover {
+  padding-left: 0.6rem;
+}
+
+.blog-row:hover .blog-row-title {
+  color: var(--text);
+}
+
+.blog-row-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  flex: 1;
+  min-width: 200px;
+  transition: color 0.2s ease;
+}
+
+.blog-row-meta {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.blog-row-meta span {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-subtle);
+  letter-spacing: 0.08em;
+}
+
+/* ─── Back to top button ────────────────────────────────── */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.7rem;
+  z-index: 40;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.2s ease;
+  pointer-events: none;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  border-color: var(--accent);
+}
+
+/* ─── CTA Button ────────────────────────────────────────── */
+.cta-button {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--bg);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 7px 16px;
+  display: inline-block;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.cta-button:hover {
+  background: #c9a96e;
+  transform: translateY(-1px);
+}
+
+/* ─── Nav Responsive ────────────────────────────────────── */
+.nav-time {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--text-subtle);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-hamburger {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
+  .nav-time {
+    display: none;
+  }
+
+  .nav-hamburger {
+    display: flex !important;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: rgba(8, 8, 10, 0.95);
+    backdrop-filter: blur(18px) saturate(1.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .nav-links[data-open="true"] {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .nav-links a {
+    width: 100%;
+    padding: 0.75rem 2.5rem !important;
+    border-top: 1px solid var(--border);
+  }
+
+  .nav-links a:first-child {
+    border-top: none;
+  }
 }

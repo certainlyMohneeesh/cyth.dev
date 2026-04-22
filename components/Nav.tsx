@@ -7,6 +7,7 @@ import Tooltip from "@/components/Tooltip";
 
 const links = [
   { href: "/", label: "index" },
+  { href: "/blog", label: "blog" },
   { href: "/projects", label: "projects" },
   { href: "/contact", label: "contact" },
 ];
@@ -14,6 +15,7 @@ const links = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [time, setTime] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -39,6 +41,11 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
   return (
     <header
       style={{
@@ -51,9 +58,9 @@ export default function Nav() {
         display: "flex",
         alignItems: "center",
         transition: "background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease",
-        background: scrolled ? "rgba(8, 8, 10, 0.88)" : "transparent",
-        backdropFilter: scrolled ? "blur(18px) saturate(1.5)" : "none",
-        borderBottom: `1px solid ${scrolled ? "rgba(255,255,255,0.05)" : "transparent"}`,
+        background: scrolled || menuOpen ? "rgba(8, 8, 10, 0.88)" : "transparent",
+        backdropFilter: scrolled || menuOpen ? "blur(18px) saturate(1.5)" : "none",
+        borderBottom: `1px solid ${scrolled || menuOpen ? "rgba(255,255,255,0.05)" : "transparent"}`,
       }}
     >
       <div
@@ -77,6 +84,7 @@ export default function Nav() {
               color: "var(--text)",
               opacity: 0.85,
               transition: "opacity 0.2s ease",
+              flexShrink: 0,
             }}
             onMouseEnter={(e) => (e.currentTarget.style.opacity = "1")}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = "0.85")}
@@ -85,24 +93,72 @@ export default function Nav() {
           </Link>
         </Tooltip>
 
-        {/* Center: live time */}
-        <span
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.6rem",
-            letterSpacing: "0.12em",
-            color: "var(--text-subtle)",
-            position: "absolute",
-            left: "50%",
-            transform: "translateX(-50%)",
-            userSelect: "none",
-          }}
-        >
+        {/* Center: live time — hidden on small screens */}
+        <span className="nav-time">
           {time}
         </span>
 
-        {/* Nav links */}
-        <nav style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+        {/* Hamburger — visible only on small screens */}
+        <button
+          className="nav-hamburger"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: "4px",
+            display: "none", // shown via CSS media query
+          }}
+        >
+          <div
+            style={{
+              width: "18px",
+              height: "12px",
+              position: "relative",
+            }}
+          >
+            <span
+              style={{
+                position: "absolute",
+                left: 0,
+                width: "100%",
+                height: "1px",
+                background: "var(--text-muted)",
+                transition: "transform 0.25s ease, opacity 0.25s ease",
+                top: menuOpen ? "5.5px" : 0,
+                transform: menuOpen ? "rotate(45deg)" : "none",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                left: 0,
+                width: "100%",
+                height: "1px",
+                background: "var(--text-muted)",
+                top: "5.5px",
+                opacity: menuOpen ? 0 : 1,
+                transition: "opacity 0.2s ease",
+              }}
+            />
+            <span
+              style={{
+                position: "absolute",
+                left: 0,
+                width: "100%",
+                height: "1px",
+                background: "var(--text-muted)",
+                transition: "transform 0.25s ease, opacity 0.25s ease",
+                top: menuOpen ? "5.5px" : "11px",
+                transform: menuOpen ? "rotate(-45deg)" : "none",
+              }}
+            />
+          </div>
+        </button>
+
+        {/* Nav links — desktop: inline, mobile: dropdown */}
+        <nav className="nav-links" data-open={menuOpen ? "true" : "false"}>
           {links.map((link) => {
             const active = pathname === link.href;
             return (

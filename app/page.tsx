@@ -808,10 +808,8 @@ export default function Home() {
             }}
           >
             <div className="section-label">recent posts</div>
-            <a
-              href="https://blog.cyth.dev"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/blog"
               className="hover-line"
               style={{
                 fontFamily: "var(--font-mono)",
@@ -820,85 +818,25 @@ export default function Home() {
                 color: "var(--text-muted)",
               }}
             >
-              all posts ↗
-            </a>
+              all posts →
+            </Link>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column" }}>
             {recentPosts.map((post, i) => (
-              <a
+              <Link
                 key={post.slug}
-                href={`https://blog.cyth.dev/posts/${post.slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`reveal reveal-delay-${i + 1}`}
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  justifyContent: "space-between",
-                  padding: "1.1rem 0",
-                  borderTop: "1px solid var(--border)",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  textDecoration: "none",
-                  transition: "padding-left 0.2s ease",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.paddingLeft = "0.5rem";
-                  (e.currentTarget.querySelector(".post-title") as HTMLElement).style.color =
-                    "var(--text)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.paddingLeft = "0";
-                  (e.currentTarget.querySelector(".post-title") as HTMLElement).style.color =
-                    "var(--text-muted)";
-                }}
+                href={`/blog/${post.slug}`}
+                className={`blog-row reveal reveal-delay-${i + 1}`}
               >
-                <span
-                  className="post-title"
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1rem",
-                    fontWeight: 300,
-                    color: "var(--text-muted)",
-                    flex: 1,
-                    minWidth: 200,
-                    transition: "color 0.2s ease",
-                  }}
-                >
+                <span className="blog-row-title">
                   {post.title}
                 </span>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "1rem",
-                    alignItems: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.58rem",
-                      color: "var(--text-subtle)",
-                      letterSpacing: "0.08em",
-                    }}
-                  >
-                    {post.readTime}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.58rem",
-                      color: "var(--text-subtle)",
-                      letterSpacing: "0.06em",
-                    }}
-                  >
-                    {post.date}
-                  </span>
+                <div className="blog-row-meta">
+                  <span>{post.readTime}</span>
+                  <span>{post.date}</span>
                 </div>
-              </a>
+              </Link>
             ))}
             <div style={{ borderTop: "1px solid var(--border)" }} />
           </div>

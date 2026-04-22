@@ -1,0 +1,134 @@
+---
+title: "Building a Movie Social Platform"
+description: "How I designed and built a social platform for movie enthusiasts with real-time reviews, watchlists, and recommendation algorithms."
+date: "2025-04-26"
+tags: ["full-stack", "nextjs", "social-platform", "react"]
+isPublished: true
+readTime: "6 min"
+---
+
+## Why Another Movie App?
+
+Letterboxd exists. IMDb exists. So why build another one?
+
+Because I wanted something different: a platform that felt less like a _database_ and more like a _conversation_. Where discovering movies happens through the people you trust, not through opaque algorithms.
+
+## The Stack
+
+After evaluating several options, I settled on:
+
+- **Next.js 14** with App Router for the frontend and API routes
+- **PostgreSQL** via Supabase for the database
+- **Prisma** as the ORM
+- **NextAuth.js** for authentication (GitHub + Google providers)
+- **TMDb API** for movie metadata and poster images
+
+## Data Modeling
+
+The core schema revolves around three relationships:
+
+```prisma
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  reviews   Review[]
+  watchlist Movie[]  @relation("Watchlist")
+  following User[]   @relation("Follows")
+  followers User[]   @relation("Follows")
+}
+
+model Movie {
+  id       Int      @id // TMDb ID
+  title    String
+  year     Int
+  poster   String
+  reviews  Review[]
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Float    // 0.5 to 5.0, half-star increments
+  content   String?
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  movieId   Int
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+}
+```
+
+## The Feed Algorithm
+
+The home feed shows reviews from people you follow, sorted by a combination of recency and engagement:
+
+```typescript
+function calculateFeedScore(review: Review): number {
+  const ageInHours = (Date.now() - review.createdAt.getTime()) / 3600000;
+  const engagementScore = review.likes * 2 + review.comments;
+
+  // Hacker News-style gravity
+  return engagementScore / Math.pow(ageInHours + 2, 1.5);
+}
+```
+
+This ensures fresh content surfaces quickly, but highly-engaged reviews have staying power.
+
+## Real-Time Reviews
+
+One feature I'm particularly proud of: **live review updates**. When someone in your network posts a review, it appears in your feed without refreshing.
+
+I used Supabase's real-time subscriptions:
+
+```typescript
+useEffect(() => {
+  const channel = supabase
+    .channel('reviews')
+    .on(
+      'postgres_changes',
+      {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'reviews',
+      },
+      (payload) => {
+        if (followingIds.includes(payload.new.authorId)) {
+          setFeed((prev) => [payload.new, ...prev]);
+        }
+      }
+    )
+    .subscribe();
+
+  return () => { supabase.removeChannel(channel) };
+}, [followingIds]);
+```
+
+## Recommendation Engine
+
+Rather than collaborative filtering (which needs massive datasets), I built a simple content-based recommender:
+
+1. Analyze the user's top-rated movies
+2. Extract genre distributions and decade preferences
+3. Find unwatched movies that match those patterns
+4. Weight by average rating from followed users
+
+It's not Netflix-level, but it surfaces genuinely interesting suggestions because it's filtered through your social graph.
+
+## Design Philosophy
+
+The UI follows three principles:
+
+1. **Posters first.** Movies are visual. The interface should be too.
+2. **People over algorithms.** Show who recommended something, not just what score it got.
+3. **Friction-free reviewing.** Rating a movie should take 3 seconds. Writing a full review should be optional.
+
+> The best social platforms don't feel like software — they feel like hanging out with friends who happen to love the same things you do.
+
+## What I'd Do Differently
+
+Looking back, a few things I'd change:
+
+- **Start with mobile.** Most movie browsing happens on the couch. I should have been mobile-first from day one.
+- **Use a graph database.** The social relationships and recommendation queries would be more natural in Neo4j than PostgreSQL.
+- **Add offline support.** People browse movies on planes. A service worker with cached watchlists would be valuable.
+
+The project is ongoing, and every week brings new ideas. That's the beauty of building something you actually use.

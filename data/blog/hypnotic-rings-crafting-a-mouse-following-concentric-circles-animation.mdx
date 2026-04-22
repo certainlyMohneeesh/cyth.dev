@@ -1,0 +1,133 @@
+---
+title: "Hypnotic Rings: Mouse-Following Concentric Circles in React"
+description: "A deep dive into building a mesmerizing mouse-following concentric circles animation using React, canvas, and requestAnimationFrame."
+date: "2025-05-31"
+tags: ["react", "animation", "canvas", "creative-coding"]
+isPublished: true
+readTime: "5 min"
+---
+
+## The Concept
+
+There's something deeply satisfying about animations that follow your cursor. They create an invisible tether between you and the screen — a sense of agency that makes interfaces feel alive.
+
+I wanted to build concentric circles that ripple outward from the mouse position, each ring slightly delayed, creating a hypnotic trailing effect.
+
+## Setting Up the Canvas
+
+The foundation is a full-screen `<canvas>` element managed by React refs:
+
+```tsx
+import { useRef, useEffect, useCallback } from 'react';
+
+export default function HypnoticRings() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const ringsRef = useRef<Array<{ x: number; y: number; radius: number; opacity: number }>>([]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas to full viewport
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    return () => window.removeEventListener('resize', resize);
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{ position: 'fixed', inset: 0, pointerEvents: 'none' }}
+    />
+  );
+}
+```
+
+## The Animation Loop
+
+The magic happens in `requestAnimationFrame`. Each frame, we:
+
+1. Spawn a new ring at the current mouse position
+2. Expand all existing rings outward
+3. Fade rings as they grow
+4. Remove rings that have fully faded
+
+```typescript
+const animate = () => {
+  const rings = ringsRef.current;
+
+  // Spawn new ring every 3 frames
+  if (frameCount % 3 === 0) {
+    rings.push({
+      x: mouseRef.current.x,
+      y: mouseRef.current.y,
+      radius: 0,
+      opacity: 0.6,
+    });
+  }
+
+  // Update existing rings
+  for (let i = rings.length - 1; i >= 0; i--) {
+    rings[i].radius += 2;
+    rings[i].opacity -= 0.008;
+
+    if (rings[i].opacity <= 0) {
+      rings.splice(i, 1);
+    }
+  }
+
+  // Draw
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (const ring of rings) {
+    ctx.beginPath();
+    ctx.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(184, 150, 90, ${ring.opacity})`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(animate);
+};
+```
+
+## Adding Easing
+
+The linear expansion looks mechanical. Adding easing to the radius growth makes the rings feel more organic:
+
+```typescript
+// Instead of constant expansion:
+rings[i].radius += 2;
+
+// Use exponential decay for a more natural feel:
+const speed = Math.max(0.5, 4 - rings[i].radius * 0.02);
+rings[i].radius += speed;
+```
+
+The larger the ring gets, the slower it expands — mimicking the way ripples behave in water.
+
+## Performance Considerations
+
+Canvas animations can be expensive. A few optimizations:
+
+- **Cap the ring count**: Never allow more than 100 rings simultaneously
+- **Use `will-change: transform`** on the canvas element
+- **Skip rendering off-screen rings**: If a ring's bounding box is entirely outside the viewport, don't draw it
+
+> The best animations are the ones users don't consciously notice — they just feel that the interface is _alive_.
+
+## The Result
+
+The final effect is a trail of golden concentric circles that bloom from your cursor and dissolve into the background. It's subtle enough to not distract, but distinctive enough to feel intentional.
+
+Try moving your mouse in slow circles. The overlapping rings create interference patterns that are genuinely mesmerizing.
