@@ -2,24 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Tooltip from "@/components/Tooltip";
 
-import allProjects from "@/data/projects.json";
+import projectsData from "@/data/projects.json";
 
-const categories = [
-  { id: "all", label: "all" },
-  { id: "app", label: "apps" },
-  { id: "dataviz", label: "data viz" },
-  { id: "tool", label: "tools" },
-  { id: "design", label: "design" },
-];
+const categories = [{ id: "all", label: "all" }];
+
+const projects = projectsData.projects;
 
 export default function ProjectsPage() {
   const [active, setActive] = useState("all");
   const [hovered, setHovered] = useState<string | null>(null);
 
-  const filtered =
-    active === "all" ? allProjects : allProjects.filter((p) => p.category === active);
+  const filtered = projects;
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -116,14 +110,14 @@ export default function ProjectsPage() {
         >
           {filtered.map((project, i) => (
             <div
-              key={project.id}
+              key={project.name}
               className={`reveal reveal-delay-${Math.min(i + 1, 5)}`}
-              onMouseEnter={() => setHovered(project.id)}
+              onMouseEnter={() => setHovered(project.name)}
               onMouseLeave={() => setHovered(null)}
               style={{
                 display: "grid",
                 gridTemplateColumns: "280px 1fr",
-                background: hovered === project.id ? "var(--surface)" : "var(--bg)",
+                background: hovered === project.name ? "var(--surface)" : "var(--bg)",
                 transition: "background 0.25s ease",
               }}
             >
@@ -139,13 +133,14 @@ export default function ProjectsPage() {
               >
                 <Image
                   src={project.image}
-                  alt={project.title}
+                  alt={project.name}
                   fill
+                  sizes="(max-width: 768px) 100vw, 280px"
                   style={{
                     objectFit: "cover",
                     transition: "transform 0.5s var(--ease-out-expo), filter 0.3s ease",
-                    transform: hovered === project.id ? "scale(1.05)" : "scale(1)",
-                    filter: hovered === project.id ? "brightness(0.7)" : "brightness(0.5) saturate(0.8)",
+                    transform: hovered === project.name ? "scale(1.05)" : "scale(1)",
+                    filter: hovered === project.name ? "brightness(0.7)" : "brightness(0.5) saturate(0.8)",
                   }}
                 />
               </div>
@@ -182,7 +177,7 @@ export default function ProjectsPage() {
                           textTransform: "uppercase",
                         }}
                       >
-                        {project.subtitle}
+                        {project.tags?.[0]}
                       </div>
                       <h2
                         style={{
@@ -193,22 +188,9 @@ export default function ProjectsPage() {
                           color: "var(--text)",
                         }}
                       >
-                        {project.title}
+                        {project.name}
                       </h2>
                     </div>
-                    <Tooltip content={`built in ${project.year}`} position="bottom">
-                      <span
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.58rem",
-                          letterSpacing: "0.1em",
-                          color: "var(--text-subtle)",
-                          cursor: "default",
-                        }}
-                      >
-                        {project.year}
-                      </span>
-                    </Tooltip>
                   </div>
 
                   <p
@@ -242,86 +224,46 @@ export default function ProjectsPage() {
                   </div>
 
                   <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.6rem",
-                        letterSpacing: "0.1em",
-                        color: "var(--bg)",
-                        background: "var(--accent)",
-                        borderRadius: "4px",
-                        padding: "5px 14px",
-                        transition: "background 0.2s ease, transform 0.2s ease",
-                        display: "inline-block",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "#c9a96e";
-                        e.currentTarget.style.transform = "translateY(-1px)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "var(--accent)";
-                        e.currentTarget.style.transform = "translateY(0)";
-                      }}
-                    >
-                      live ↗
-                    </a>
-                    <a
-                      href={project.source}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.6rem",
-                        letterSpacing: "0.1em",
-                        color: "var(--text-muted)",
-                        border: "1px solid var(--border)",
-                        borderRadius: "4px",
-                        padding: "5px 14px",
-                        transition: "color 0.2s ease, border-color 0.2s ease",
-                        display: "inline-block",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.color = "var(--text)";
-                        e.currentTarget.style.borderColor = "var(--border-hover)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.color = "var(--text-muted)";
-                        e.currentTarget.style.borderColor = "var(--border)";
-                      }}
-                    >
-                      source ↗
-                    </a>
-                    {"sourceBack" in project && (
+                    {project.links.map((link) => (
                       <a
-                        href={(project as { sourceBack?: string }).sourceBack}
+                        key={link.href}
+                        href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
                           fontFamily: "var(--font-mono)",
                           fontSize: "0.6rem",
                           letterSpacing: "0.1em",
-                          color: "var(--text-muted)",
-                          border: "1px solid var(--border)",
+                          color: link.name.toLowerCase().includes("live") ? "var(--bg)" : "var(--text-muted)",
+                          background: link.name.toLowerCase().includes("live") ? "var(--accent)" : "transparent",
+                          border: link.name.toLowerCase().includes("live") ? "1px solid var(--accent)" : "1px solid var(--border)",
                           borderRadius: "4px",
                           padding: "5px 14px",
-                          transition: "color 0.2s ease, border-color 0.2s ease",
+                          transition: "border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease",
                           display: "inline-block",
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.color = "var(--text)";
-                          e.currentTarget.style.borderColor = "var(--border-hover)";
+                          if (link.name.toLowerCase().includes("live")) {
+                            e.currentTarget.style.transform = "translateY(-1px)";
+                            e.currentTarget.style.background = "#c9a96e";
+                          } else {
+                            e.currentTarget.style.color = "var(--text)";
+                            e.currentTarget.style.borderColor = "var(--border-hover)";
+                          }
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.color = "var(--text-muted)";
-                          e.currentTarget.style.borderColor = "var(--border)";
+                          e.currentTarget.style.transform = "translateY(0)";
+                          if (link.name.toLowerCase().includes("live")) {
+                            e.currentTarget.style.background = "var(--accent)";
+                          } else {
+                            e.currentTarget.style.color = "var(--text-muted)";
+                            e.currentTarget.style.borderColor = "var(--border)";
+                          }
                         }}
                       >
-                        backend ↗
+                        {link.name.toLowerCase()} ↗
                       </a>
-                    )}
+                    ))}
                   </div>
                 </div>
               </div>

@@ -9,7 +9,7 @@ import Accordion, { AccordionItemData } from "@/components/Accordion";
 import projectsData from "@/data/projects.json";
 import experienceData from "@/data/experience.json";
 
-/* ─── Data ──────────────────────────────────────────────── */
+/* --- Data ------------------------------------------------ */
 const experience: AccordionItemData[] = experienceData.work.map((item) => ({
   id: item.id,
   trigger: (
@@ -106,7 +106,7 @@ const experience: AccordionItemData[] = experienceData.work.map((item) => ({
   ),
 }));
 
-const featuredProjects = projectsData.filter((p) => p.featured);
+const featuredProjects = projectsData.projects.slice(0, 4);
 
 
 const recentPosts = [
@@ -131,7 +131,7 @@ const recentPosts = [
   },
 ];
 
-/* ─── Profile image with animated reveal ────────────────── */
+/* --- Profile image with animated reveal ------------------ */
 function ProfileImage() {
   const [loaded, setLoaded] = useState(false);
   const [clicked, setClicked] = useState(0);
@@ -240,7 +240,13 @@ function ProfileImage() {
             alt="Mohneesh"
             width={160}
             height={160}
-            style={{ objectFit: "cover", filter: egg ? "hue-rotate(180deg)" : "none", transition: "filter 0.4s ease" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: egg ? "hue-rotate(180deg)" : "none",
+              transition: "filter 0.4s ease",
+            }}
             onLoad={() => setLoaded(true)}
             priority
           />
@@ -274,7 +280,7 @@ function ProfileImage() {
   );
 }
 
-/* ─── Project card ──────────────────────────────────────── */
+/* --- Project card ---------------------------------------- */
 function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
   const [hovered, setHovered] = useState(false);
 
@@ -296,8 +302,9 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
       >
         <Image
           src={project.image}
-          alt={project.title}
+          alt={project.name}
           fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
           style={{
             objectFit: "cover",
             transition: "transform 0.5s var(--ease-out-expo)",
@@ -320,10 +327,7 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
             zIndex: 2,
           }}
         >
-          {[
-            { href: project.live, label: "live ↗" },
-            { href: project.source, label: "source ↗" },
-          ].map((link) => (
+          {project.links.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -351,7 +355,7 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
                 e.currentTarget.style.color = "var(--text)";
               }}
             >
-              {link.label}
+              {link.name.toLowerCase()} ↗
             </a>
           ))}
         </div>
@@ -369,7 +373,7 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
             textTransform: "uppercase",
           }}
         >
-          {project.subtitle}
+          {project.tags?.[0]}
         </div>
         <div
           style={{
@@ -380,7 +384,7 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
             color: "var(--text)",
           }}
         >
-          {project.title}
+          {project.name}
         </div>
         <p
           style={{
@@ -405,7 +409,7 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
   );
 }
 
-/* ─── Page ───────────────────────────────────────────────── */
+/* --- Page ------------------------------------------------- */
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"work" | "education">("work");
 
@@ -425,7 +429,7 @@ export default function Home() {
 
   return (
     <div className="grid-bg" style={{ minHeight: "100vh" }}>
-      {/* ── Hero ─────────────────────────────────────────── */}
+      {/* -- Hero ------------------------------------------- */}
       <section
         style={{
           paddingTop: "6rem",
@@ -777,7 +781,7 @@ export default function Home() {
           >
             {featuredProjects.map((project, i) => (
               <div
-                key={project.id}
+                key={project.name}
                 className={`reveal reveal-delay-${i + 1}`}
               >
                 <ProjectCard project={project} />

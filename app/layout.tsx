@@ -46,6 +46,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${jetbrains.variable}`}>
+      <head>
+        <script
+          async
+          crossOrigin="anonymous"
+          src="https://tweakcn.com/live-preview.min.js"
+        />
+      </head>
       <body>
         <Nav />
         <main style={{ paddingTop: "60px" }}>{children}</main>
