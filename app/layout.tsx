@@ -1,21 +1,20 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, JetBrains_Mono } from "next/font/google";
+import { Syne, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import EasterEgg from "@/components/EasterEgg";
 
-const cormorant = Cormorant_Garamond({
+const syne = Syne({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-syne",
   display: "swap",
 });
 
-const jetbrains = JetBrains_Mono({
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["300", "400"],
-  variable: "--font-jetbrains",
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-bricolage",
   display: "swap",
 });
 
@@ -45,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`${syne.variable} ${bricolage.variable}`}>
       <head>
         <script
           async

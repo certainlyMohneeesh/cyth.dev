@@ -166,7 +166,7 @@ function ProfileImage() {
           width="152" height="152"
           rx="4"
           fill="none"
-          stroke="rgba(184,150,90,0.35)"
+          stroke="var(--accent-dim)"
           strokeWidth="1"
           strokeDasharray="400"
           style={{
@@ -227,7 +227,7 @@ function ProfileImage() {
                 inset: "0 auto 0 -2px",
                 width: "3px",
                 background:
-                  "linear-gradient(transparent, rgba(184,150,90,0.6), transparent)",
+                  "linear-gradient(transparent, var(--accent), transparent)",
                 animation: "imageScan 0.9s var(--ease-out-expo) forwards",
                 zIndex: 2,
                 pointerEvents: "none",
@@ -428,7 +428,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="grid-bg" style={{ minHeight: "100vh" }}>
+    <div className="gradient-bg" style={{ minHeight: "100vh" }}>
       {/* -- Hero ------------------------------------------- */}
       <section
         style={{

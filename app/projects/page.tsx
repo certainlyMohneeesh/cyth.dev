@@ -245,7 +245,7 @@ export default function ProjectsPage() {
                         onMouseEnter={(e) => {
                           if (link.name.toLowerCase().includes("live")) {
                             e.currentTarget.style.transform = "translateY(-1px)";
-                            e.currentTarget.style.background = "#c9a96e";
+                            e.currentTarget.style.background = "var(--accent-dim)";
                           } else {
                             e.currentTarget.style.color = "var(--text)";
                             e.currentTarget.style.borderColor = "var(--border-hover)";

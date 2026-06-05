@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-import { CodeCopyButton } from "./CodeCopyButton";
+import { CodeBlock } from "./CodeBlock";
 
 /* ─── Helper: extract raw text from React nodes ─────── */
 function getTextContent(node: React.ReactNode): string {
@@ -104,10 +104,9 @@ export const BlogMDXComponents = {
   pre: ({ children, ...props }: PropsWithChildren) => {
     const codeText = getTextContent(children);
     return (
-      <div className="code-block-wrapper">
+      <CodeBlock rawCode={codeText}>
         <pre {...props}>{children}</pre>
-        <CodeCopyButton code={codeText} />
-      </div>
+      </CodeBlock>
     );
   },
 

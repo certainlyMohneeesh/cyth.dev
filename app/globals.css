@@ -2,19 +2,19 @@
 
 /* ─── Design Tokens ─────────────────────────────────────── */
 :root {
-  --bg: #08080a;
-  --surface: #0e0e11;
-  --surface-2: #141417;
-  --text: #e8e4dc;
-  --text-muted: #6b6862;
-  --text-subtle: #343230;
-  --accent: #b8965a;
-  --accent-dim: #7a6035;
-  --border: #1c1c1f;
-  --border-hover: #2e2e33;
+  --bg: oklch(0.12 0.01 264);
+  --surface: oklch(0.16 0.02 264);
+  --surface-2: oklch(0.20 0.02 264);
+  --text: oklch(0.98 0 0);
+  --text-muted: oklch(0.70 0.02 264);
+  --text-subtle: oklch(0.40 0.02 264);
+  --accent: oklch(0.75 0.15 220); /* Electric Cyan */
+  --accent-dim: oklch(0.35 0.10 220);
+  --border: rgba(255, 255, 255, 0.08); /* Crisp translucent white */
+  --border-hover: rgba(255, 255, 255, 0.18);
 
-  --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
-  --font-mono: var(--font-jetbrains), 'JetBrains Mono', 'Fira Code', monospace;
+  --font-display: var(--font-syne), 'Syne', sans-serif;
+  --font-mono: var(--font-bricolage), 'Bricolage Grotesque', sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
@@ -52,9 +52,10 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 9998;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
+  mix-blend-mode: overlay;
 }
 
 /* ─── Scrollbar ─────────────────────────────────────────── */
@@ -73,7 +74,7 @@ body::before {
 
 /* ─── Selection ─────────────────────────────────────────── */
 ::selection {
-  background: rgba(184, 150, 90, 0.18);
+  background: var(--accent-dim);
   color: var(--text);
 }
 
@@ -83,8 +84,8 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 300;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 a {
@@ -105,12 +106,14 @@ a {
   }
 }
 
-/* ─── Grid Background ───────────────────────────────────── */
-.grid-bg {
+/* ─── Atmospheric Gradient Background ───────────────────── */
+.gradient-bg {
+  background-color: var(--bg);
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
-  background-size: 72px 72px;
+    radial-gradient(ellipse 80% 55% at 15% 10%, oklch(0.28 0.09 55 / 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 70% at 90% 85%, oklch(0.22 0.08 260 / 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 70% 20%, oklch(0.20 0.07 195 / 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse 90% 40% at 50% 100%, oklch(0.10 0.02 264 / 0.8) 0%, transparent 70%);
 }
 
 /* ─── Keyframe Animations ───────────────────────────────── */
@@ -348,7 +351,7 @@ a {
 .project-card:hover {
   border-color: var(--border-hover);
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(184, 150, 90, 0.05);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--accent-dim);
 }
 
 .project-card .overlay {
@@ -373,7 +376,7 @@ a {
   z-index: 9999;
   transition: width 0.1s linear;
   pointer-events: none;
-  box-shadow: 0 0 8px rgba(184, 150, 90, 0.4);
+  box-shadow: 0 0 8px var(--accent-dim);
 }
 
 /* ─── Blog Prose ────────────────────────────────────────── */
@@ -560,41 +563,13 @@ a {
   color: var(--accent);
 }
 
-.code-block-wrapper {
-  position: relative;
-}
-
-.code-block-wrapper .copy-btn {
-  position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-}
-
-.code-block-wrapper:hover .copy-btn {
-  opacity: 1;
-}
-
-.code-block-wrapper .copy-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
+/* .code-block-wrapper layout is handled inline in CodeBlock.tsx */
 
 /* ─── Tag active state ──────────────────────────────────── */
 .tag-active {
   border-color: var(--accent) !important;
   color: var(--accent) !important;
-  background: rgba(184, 150, 90, 0.08) !important;
+  background: color-mix(in oklch, var(--accent) 15%, transparent) !important;
 }
 
 .tag-clickable {
