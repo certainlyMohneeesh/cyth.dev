@@ -79,7 +79,7 @@ export default function BlogPageClient({
   }, [filteredPosts]);
 
   return (
-    <div className="gradient-bg" style={{ minHeight: "100vh" }}>
+    <>
       <section style={{ padding: "5rem 0 3rem" }}>
         <div className="container">
           {/* Header */}
@@ -285,6 +285,6 @@ export default function BlogPageClient({
           )}
         </div>
       </section>
-    </div>
+    </>
   );
 }

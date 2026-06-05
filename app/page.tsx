@@ -428,7 +428,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="gradient-bg" style={{ minHeight: "100vh" }}>
+    <div className="grid-bg" style={{ minHeight: "100vh" }}>
       {/* -- Hero ------------------------------------------- */}
       <section
         style={{
@@ -558,7 +558,7 @@ export default function Home() {
                   marginBottom: "2rem",
                   animation: "fadeUp 0.6s ease 0.25s both",
                 }}
-              >e
+              >a
                 23-year-old{" "}
                 <Tooltip content="okay maybe a little bit 🍳">
                   <span

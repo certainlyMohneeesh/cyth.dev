@@ -58,7 +58,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const relatedPosts = getRelatedPosts(slug, 3);
 
   return (
-    <div className="gradient-bg" style={{ minHeight: "100vh" }}>
+    <>
       <section style={{ padding: "4rem 0 5rem" }}>
         <div className="container">
           <BlogArticle frontmatter={post.frontmatter} content={post.content} />
@@ -130,6 +130,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
