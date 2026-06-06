@@ -3,8 +3,6 @@ import { Syne, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import EasterEgg from "@/components/EasterEgg";
-import { ObsidianShader } from "@/components/ObsidianShader";
-import { SignalTrace } from "@/components/SignalTrace";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -55,8 +53,6 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ObsidianShader />
-        <SignalTrace />
         <Nav />
         <main style={{ paddingTop: "60px" }}>{children}</main>
         <EasterEgg />

@@ -4,7 +4,7 @@
       "name": "Nesternity - The Calmest CRM",
       "description": "Nesternity is your all-in-one workspace for managing clients, projects, tasks, and invoices — all from one calm, cozy hub.",
       "href": "https://nesternity.cyth.app",
-      "image": "/nesternity.png",
+      "image": "https://res.cloudinary.com/dj3dp0ccy/image/upload/f_auto/q_auto/v1776791713/nesternity_xq4rmc.png",
       "tags": [
         "NextJS 16",
         "PostgreSQL",

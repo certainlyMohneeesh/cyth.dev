@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Tooltip from "@/components/Tooltip";
+import { CipherReveal } from "@/components/CipherReveal";
+import { Globe, Code } from "lucide-react";
 import Accordion, { AccordionItemData } from "@/components/Accordion";
 
 import projectsData from "@/data/projects.json";
@@ -311,58 +313,10 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
             transform: hovered ? "scale(1.04)" : "scale(1)",
           }}
         />
-        <div className="overlay" />
-
-        {/* Links appear on hover */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.75rem",
-            opacity: hovered ? 1 : 0,
-            transition: "opacity 0.3s ease",
-            zIndex: 2,
-          }}
-        >
-          {project.links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.6rem",
-                letterSpacing: "0.1em",
-                color: "var(--text)",
-                background: "rgba(8,8,10,0.7)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "4px",
-                padding: "5px 12px",
-                backdropFilter: "blur(8px)",
-                transition: "border-color 0.2s ease, color 0.2s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "var(--accent)";
-                e.currentTarget.style.color = "var(--accent)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-                e.currentTarget.style.color = "var(--text)";
-              }}
-            >
-              {link.name.toLowerCase()} ↗
-            </a>
-          ))}
-        </div>
       </div>
 
       {/* Meta */}
-      <div style={{ padding: "1.1rem 1.2rem 1.25rem" }}>
+      <div style={{ padding: "1.1rem 1.2rem 1.25rem", display: "flex", flexDirection: "column", flexGrow: 1 }}>
         <div
           style={{
             fontFamily: "var(--font-mono)",
@@ -384,7 +338,7 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
             color: "var(--text)",
           }}
         >
-          {project.name}
+          <CipherReveal text={project.name} triggerOnHover wrap={true} />
         </div>
         <p
           style={{
@@ -397,12 +351,46 @@ function ProjectCard({ project }: { project: (typeof featuredProjects)[0] }) {
         >
           {project.description}
         </p>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
-          {project.tags.map((tag) => (
-            <span key={tag} className="tag">
-              {tag}
-            </span>
-          ))}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "auto", gap: "1rem" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+            {project.tags.map((tag) => (
+              <span key={tag} className="tag">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: "0.6rem", paddingBottom: "0.2rem" }}>
+            {project.links.map((link) => {
+              const Icon = link.icon === "github" ? Code : Globe;
+              return (
+                <Tooltip key={link.href} content={link.name.toLowerCase()} position="top">
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      color: "var(--text-muted)",
+                      transition: "color 0.2s ease, transform 0.2s var(--ease-out-expo)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = "var(--accent)";
+                      e.currentTarget.style.transform = "scale(1.15)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = "var(--text-muted)";
+                      e.currentTarget.style.transform = "scale(1)";
+                    }}
+                  >
+                    <Icon size={16} strokeWidth={1.5} />
+                  </a>
+                </Tooltip>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -507,11 +495,11 @@ export default function Home() {
                   animation: "fadeUp 0.6s ease 0.15s both",
                 }}
               >
-                Mohneesh
+                <CipherReveal text="Mohneesh" triggerOnMount triggerOnHover={false} glitchFont={false} />
                 <span
                   style={{ color: "var(--text-muted)", fontStyle: "italic", marginLeft: "0.4rem" }}
                 >
-                  Naidu
+                  <CipherReveal text="Naidu" triggerOnMount triggerOnHover={false} glitchFont={false} />
                 </span>
               </h1>
 
@@ -783,6 +771,7 @@ export default function Home() {
               <div
                 key={project.name}
                 className={`reveal reveal-delay-${i + 1}`}
+                style={{ height: "100%" }}
               >
                 <ProjectCard project={project} />
               </div>

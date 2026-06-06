@@ -107,12 +107,12 @@ a {
 }
 
 /* ─── Grid Background ───────────────────────────────────── */
-.grid-bg {
+/* .grid-bg {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
   background-size: 72px 72px;
-}
+} */
 
 /* ─── Keyframe Animations ───────────────────────────────── */
 @keyframes fadeUp {
@@ -344,6 +344,9 @@ a {
   transition: border-color 0.3s ease, transform 0.3s var(--ease-out-expo),
     box-shadow 0.3s ease;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .project-card:hover {

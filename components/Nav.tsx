@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Tooltip from "@/components/Tooltip";
+import { CipherReveal } from "@/components/CipherReveal";
 
 const links = [
   { href: "/", label: "index" },
@@ -195,7 +196,7 @@ export default function Nav() {
                     }}
                   />
                 )}
-                {link.label}
+                <CipherReveal text={link.label} triggerOnHover />
               </Link>
             );
           })}
